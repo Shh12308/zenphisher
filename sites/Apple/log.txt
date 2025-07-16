@@ -1,1 +1,7 @@
-[2025-07-15 14:33:22] IP: 192.168.1.8 | Email: test@example.com | Password: hunter2
+[Timestamp: 2023-07-15 12:30:45] - Target: Snapchat
+Username: user@example.com
+Password: securepassword123
+IP Address: 192.168.1.5
+Geolocation: City: Los Angeles, Country: US
+Timezone: GMT-7
+Device Info: Chrome/91.0.4472.124, Windows 10

